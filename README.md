@@ -32,7 +32,7 @@
 ১. রিপোজিটরি ক্লোন করো:
 
 ```bash
-git clone https://github.com/yourusername/your-project.git
+git clone https://github.com/yourusername/your-project.git](https://github.com/Akash123a5/Ecom-Project.git
 cd your-project
 ```
 
