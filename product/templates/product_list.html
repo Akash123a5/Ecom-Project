@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}All Products{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+  {% if messages %}
+    {% for message in messages %}
+      {% if message.tags == 'error' %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {% elif message.tags == 'success' %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {% elif message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      {% else %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+      {% endif %}
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+  {% endif %}
+</div>
+
+
+<div class="bg-light py-4">
+    <div class="container">
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-md-3">
+                <div class="card product-card shadow-sm h-100">
+                    <div class="position-relative overflow-hidden">
+                        {% if product.is_on_sale %}
+                        <span class="badge bg-danger badge-floating">Sale!</span>
+                        {% endif %}
+                        <img src="{{ product.image.url }}" class="product-image card-img-top" alt="{{ product.name }}">
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <a href="{% url 'product_detail' product.slug %}"  class="card-title mb-0  text-decoration-none" >{{ product.name }}</a>
+                            <div class="text-warning">
+                                {% for i in "12345"|slice:":product.average_rating"|make_list %}
+                                    <i class="fas fa-star"></i>
+                                {% endfor %}
+                                {% if product.average_rating|floatformat:1 != product.average_rating|floatformat:0 %}
+                                    <i class="fas fa-star-half-alt"></i>
+                                {% endif %}
+                            </div>
+                            
+                        </div>
+                        <p class="card-text text-muted">{{ product.description|truncatewords:20 }}</p>
+                        <div class="mb-3">
+                            {% comment %} <span class="text-muted small">Available Colors:</span> {% endcomment %}
+                            <div class="mt-2">
+                                {% for color in product.available_colors %}
+                                <span class="color-option {% if forloop.first %}active{% endif %}" style="background-color: {{ color }};" title="{{ color }}"></span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                {% if product.old_price %}
+                                <span class="text-muted text-decoration-line-through">৳{{ product.old_price }}</span>
+                                {% endif %}
+                                <span class="h5 mb-0 ms-2 text-primary">৳{{ product.new_price }}</span>
+                            </div>
+                            <span class="badge {% if product.stock %}bg-success{% else %}bg-danger{% endif %}">
+                                {% if product.stock %}In Stock{% else %}Out of Stock{% endif %}
+                            </span>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">
+    <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+</a>
+
+                            <button class="btn btn-outline-secondary">
+                                <i class="fas fa-heart me-2"></i>Add to Wishlist
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <div class="d-flex justify-content-between text-muted small">
+                            <span><i class="fas fa-truck me-2"></i>Free Shipping</span>
+                            <span><i class="fas fa-undo me-2"></i>30 Days Return</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', function () {
+                this.parentElement.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    });
+</script>
+{% endblock %}
