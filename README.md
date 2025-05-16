@@ -32,7 +32,7 @@
 ১. রিপোজিটরি ক্লোন করো:
 
 ```bash
-git clone https://github.com/yourusername/your-project.git](https://github.com/Akash123a5/Ecom-Project.git
+git clone https://github.com/Akash123a5/Ecom-Project.git
 cd your-project
 ```
 
@@ -80,7 +80,6 @@ python manage.py runserver
 
 ---
 
-> **Tip**: প্রজেক্টের কোড আরও ভালোভাবে বুঝতে `docs/` ফোল্ডারে থাকা ডকুমেন্টেশন দেখো।
 
 ---
 
